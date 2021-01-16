@@ -22,13 +22,13 @@ The only part of this I don't quite understand is that 16 bytes from slot 1 don'
 4800 - 4FFF = C800-CFFF Slot 1 option ROM (INTCXROMOFF)
 5000 - 57FF = C800-CFFF Slot 5 option ROM
 5800 - 5FFF = C800-CFFF Slot 2 option ROM
-6000 - 63FF = CB00-CFFF Slot 7 option ROM bank 1
-6400 - 67FF = CB00-CFFF Slot 7 option ROM bank 2
-6800 - 6BFF = CB00-CFFF Slot 7 option ROM bank 3
-6C00 - 6FFF = CB00-CFFF Slot 7 option ROM bank 4
-7000 - 73FF = CB00-CFFF Slot 7 option ROM bank 5
-7400 - 77FF = CB00-CFFF Slot 7 option ROM bank 6
-7800 - 7FFF = C800-CFFF Slot 6 option ROM / CB00-CFFF Slot 7 option ROM bank 7+8
+6000 - 63FF = CC00-CFFF Slot 7 option ROM bank 1
+6400 - 67FF = CC00-CFFF Slot 7 option ROM bank 2
+6800 - 6BFF = CC00-CFFF Slot 7 option ROM bank 3
+6C00 - 6FFF = CC00-CFFF Slot 7 option ROM bank 4
+7000 - 73FF = CC00-CFFF Slot 7 option ROM bank 5
+7400 - 77FF = CC00-CFFF Slot 7 option ROM bank 6
+7800 - 7FFF = C800-CFFF Slot 6 option ROM / CC00-CFFF Slot 7 option ROM bank 7+8
 ```
 
 There's an overlap because the slot 7 banking register uses 3 bits, which gives you 8 banks, but they only use 6. The other two really belong to the slot 6 option ROM. C800-CBFF for slot 7 is actually RAM dedicated to the disk controller.
