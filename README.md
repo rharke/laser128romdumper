@@ -31,7 +31,7 @@ The only part of this I don't quite understand is that 16 bytes from slot 1 don'
 7800 - 7FFF = C800-CFFF Slot 6 option ROM / CB00-CFFF Slot 7 option ROM bank 7+8
 ```
 
-There's an overlap because the slot 7 banking register uses 3 bits, which gives you 8 banks, but they only use 6. The other two really belong to the slot 6 option ROM. C800-C3FF for slot 7 is actually RAM dedicated to the disk controller.
+There's an overlap because the slot 7 banking register uses 3 bits, which gives you 8 banks, but they only use 6. The other two really belong to the slot 6 option ROM. C800-CBFF for slot 7 is actually RAM dedicated to the disk controller.
 
 ## License
 
