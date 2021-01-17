@@ -56,7 +56,7 @@ MOVE            := $fe2c
         sta     $c0e8
 .endmacro
 
-; Fill some memory with $FF
+; Fill some memory with $FF (up to 256 bytes)
 .macro fillff   base, len
 .scope
         lda     #$ff
@@ -72,15 +72,22 @@ loop:   sta     base,y
         .org    $4000
 
 
-        ; jump table
-        jmp     block0
-        jmp     block1
-        jmp     block2
-        jmp     block3
+        ; jump table - "new" Laser 128
+        jmp     com0
+        jmp     com2
+        jmp     new4
+        jmp     new6
+
+        ; jump table - "old" Laser 128
+        jmp     com0
+        jmp     com2
+        jmp     old4
+        jmp     oldser
+        jmp     old6
 
 
-        ; $0000 - $1fff
-block0: fillff  $2000,0             ; $C000-C0FF empty (soft switches)
+        ; $0000 - $1fff, common to old and new models
+com0:   fillff  $2000,0             ; $C000-C0FF empty (soft switches)
         sta     INTCXROMON
         mv      $2100,$c100,$c7ff   ; $C100-C7FF from main ROM
         sta     INTCXROMOFF
@@ -98,13 +105,13 @@ block0: fillff  $2000,0             ; $C000-C0FF empty (soft switches)
         rts
 
 
-        ; $2000 - 3fff
-block1: mv      $2000,$e000,$ffff   ; E000-FFFF ROM
+        ; $2000 - 3fff, common to old and new models
+com2:   mv      $2000,$e000,$ffff   ; E000-FFFF ROM
         rts
 
 
-        ; $4000 - $5fff
-block2: fillff  $2000,0             ; $C000-C0FF empty (soft switches)
+        ; $4000 - $5fff, new models
+new4:   fillff  $2000,0             ; $C000-C0FF empty (soft switches)
         sta     SLOTC3ROMON
         mv      $2100,$c100,$c7ff   ; $C100-C7FF from slot ROM
         sta     SLOTC3ROMOFF
@@ -131,8 +138,8 @@ block2: fillff  $2000,0             ; $C000-C0FF empty (soft switches)
         rts
 
 
-        ; $6000 - $7fff
-block3: s7bank  #$00
+        ; $6000 - $7fff, new models
+new6:   s7bank  #$00
         mv      $2000,$cc00,$cfff   ; slot 7 option ROM bank 0
         fillff  $23f8,8
 
@@ -159,6 +166,77 @@ block3: s7bank  #$00
         lda     $cfff
         lda     $c600
         mv      $3800,$c800,$cfff   ; slot 6 option ROM
+        lda     $cfff
+        fillff  $3ff8,8
+
+        rts
+
+
+        ; $4000 - $5fff, old models
+old4:   fillff  $2000,0             ; $C000-C0FF empty (soft switches)
+        mv      $2100,$c100,$c7ff   ; $C100-C7FF from slot ROM
+        fillff  $2300,0             ; slot 3 does not exist
+        fillff  $2500,0             ; slot 5 is always external
+        fillff  $2700,0             ; slot 7 is always external
+        fillff  $21c0,16            ; not sure, something funky with the ser/par logic
+
+        lda     $cfff
+        lda     $c100
+        mv      $2800,$c800,$cfff   ; slot 1 option ROM
+        lda     $cfff
+        fillff  $2ff8,8
+
+        fillff  $3000,0             ; empty
+        fillff  $3200,0
+        fillff  $3300,0
+        fillff  $3400,0
+        fillff  $3500,0
+        fillff  $3600,0
+        fillff  $3700,0
+
+        lda     $cfff
+        lda     $c200
+        mv      $3800,$c800,$cfff   ; slot 2 option ROM
+        lda     $cfff
+        fillff  $3ff8,8
+
+        rts
+
+
+oldser: mv      $3100,$c100,$c1ff   ; serial version of slot 1
+        rts
+
+
+        ; $6000 - $7fff, old models
+old6:   fillff  $2000,0             ; empty
+        fillff  $2100,0
+        fillff  $2200,0
+        fillff  $2300,0
+        fillff  $2400,0
+        fillff  $2500,0
+        fillff  $2600,0
+        fillff  $2700,0
+
+        lda     $cfff
+        lda     $c600
+        lda     $c100
+        mv      $2800,$c800,$cfff   ; slot 6 option ROM bank 1
+        lda     $cfff
+        fillff  $2ff8,8
+
+        fillff  $3000,0             ; empty
+        fillff  $3100,0
+        fillff  $3200,0
+        fillff  $3300,0
+        fillff  $3400,0
+        fillff  $3500,0
+        fillff  $3600,0
+        fillff  $3700,0
+
+        lda     $cfff
+        lda     $c600
+        lda     $c200
+        mv      $3800,$c800,$cfff   ; slot 6 option ROM bank 2
         lda     $cfff
         fillff  $3ff8,8
 

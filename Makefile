@@ -21,7 +21,7 @@ VOLNAME=LASERDUMP
 attrs.PRODOS		= FF0000
 attrs.BASIC.SYSTEM	= FF2000
 attrs.STARTUP		= FC0801
-attrs.DUMPROMNEW	= 064000
+attrs.DUMPROM		= 064000
 
 # Add a file to a disk image with Cadius, using the attrs.*
 # map above for the file type/subtype.
@@ -35,7 +35,7 @@ $(BDIR)/$(IMGNAME): \
 $(RDIR)/PRODOS \
 $(RDIR)/BASIC.SYSTEM \
 $(LDIR)/STARTUP \
-$(LDIR)/DUMPROMNEW
+$(LDIR)/DUMPROM
 	rm -f $@
 	$(CADIUS) createvolume $@ $(VOLNAME) 140KB
 	$(foreach f,$^,$(call addfile,$@,/$(VOLNAME),$f))

@@ -2,13 +2,50 @@
 
 This dumps the ROM from a Laser 128 while the system is live. Useful if you don't have an EEPROM programmer/reader of your own.
 
-I've only tested this on "new style" Laser 128s, with the red badge on the case. The old black and silver badged models might have a different ROM layout, I'm not sure. It wouldn't surprise me, they're radically different pieces of hardware.
+This utility will work on both "old" and "new" model Laser 128s, but the ROM map is quite different, so you must tell the tool which model you have.
 
-You need to have the Parallel/Serial switch set to Parallel to run. The reason is that the serial firmware for slot 1 is really just a copy of slot 2, so if you have the switch set to Serial, then you get two copies of the serial option ROM and zero copies of the parallel option ROM.
+On the "old" models, you will need to manually toggle between Parallel and Serial to get both versions of the slot 1 ROM. You will be prompted to do this.
 
-The only part of this I don't quite understand is that 16 bytes from slot 1 don't end up matching the original ROM. They should be all $FF, but there is an odd pattern there instead. I suspect it is either (a) some convoluted logic with the Parallel/Serial switch or (b) something to do with the port configuration you can set by holding "P" while powering up the machine.
+On the "new" models, you should leave the switch in the Parallel position the whole time, otherwise you will get two copies of the serial option ROM and zero copies of the parallel option ROM. You must also ensure that slot 5 and 7 are set to Internal, or you will be dumping the ROMs from your attached cards (or random electrical noise).
+
+## Accuracy / known issues
+
+Output is correct for ROM version 2.9 (on an old model) and ROM version 6.0 (on a new model).
+
+The only part of this I don't quite understand is that 16 bytes from slot 1 don't end up matching the original ROM. They should be all $FF, but there is an odd pattern there instead. The tool manually rewrites it. I suspect it is either (a) some convoluted logic with the Parallel/Serial switch or (b) something to do with the port configuration you can set by holding "P" while powering up the machine.
 
 ## ROM layout
+
+### "Old" Laser 128
+
+```
+0000 - 00FF = empty (reserved for soft switches)
+0100 - 07FF = C100-C7FF (INTCXROMON)
+0800 - 0FFF = C800-CFFF slot 1 option ROM (INTCXROMON)
+1000 - 1FFF = D000-DFFF ROM
+2000 - 2FFF = E000-EFFF ROM
+3000 - 3FFF = F000-FFFF ROM
+4000 - 40FF = empty (reserved for soft switches)
+4100 - 42FF = C100-C2FF (INTCXROMOFF, Parallel mode)
+4300 - 43FF = empty (no ROM for slot 3)
+4400 - 44FF = C400-C4FF (INTCXROMOFF)
+4500 - 45FF = empty (slot 5 is always external)
+4600 - 46FF = C600-C6FF (INTCXROMOFF)
+4700 - 47FF = empty (slot 7 is always external)
+4800 - 4FFF = C800-CFFF Slot 1 option ROM (INTCXROMOFF)
+5000 - 50FF = empty (reserved for soft switches)
+5100 - 51FF = C100-C2FF (INTCXROMOFF, Serial mode)
+5200 - 57FF = empty (no alternate slot 2-7)
+5800 - 5FFF = C800-CFFF Slot 2 option ROM
+6000 - 67FF = empty (inaccessible?)
+6800 - 6FFF = CC00-CFFF Slot 6 option ROM bank 1
+7000 - 77FF = empty (inaccessible?)
+7800 - 7FFF = C800-CFFF Slot 6 option ROM bank 2
+```
+
+Slot 6 option ROM bank 2 is empty in ROM 2.9, but it might be populated on other models. I've confirmed that it's accessible.
+
+### "New" Laser 128 (also EX and EX/2)
 
 ```
 0000 - 00FF = empty (reserved for soft switches)
