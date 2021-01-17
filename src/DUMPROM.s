@@ -89,15 +89,8 @@ loop:   sta     base,y
         ; $0000 - $1fff, common to old and new models
 com0:   fillff  $2000,0             ; $C000-C0FF empty (soft switches)
         sta     INTCXROMON
-        mv      $2100,$c100,$c7ff   ; $C100-C7FF from main ROM
+        mv      $2100,$c100,$cfff   ; $C100-C7FF from main ROM
         sta     INTCXROMOFF
-
-        lda     $cfff
-        lda     $c100
-        sta     INTCXROMON
-        mv      $2800,$c800,$cfff   ; slot 1 option ROM alternate
-        sta     INTCXROMOFF
-        lda     $cfff
         fillff  $2ff8,8
 
         mv      $3000,$d000,$dfff   ; D000-DFFF ROM
@@ -120,19 +113,16 @@ new4:   fillff  $2000,0             ; $C000-C0FF empty (soft switches)
         lda     $cfff
         lda     $c100
         mv      $2800,$c800,$cfff   ; slot 1 option ROM
-        lda     $cfff
         fillff  $2ff8,8
 
         lda     $cfff
         lda     $c500
         mv      $3000,$c800,$cfff   ; slot 5 option ROM
-        lda     $cfff
         fillff  $37f8,8
 
         lda     $cfff
         lda     $c200
         mv      $3800,$c800,$cfff   ; slot 2 option ROM
-        lda     $cfff
         fillff  $3ff8,8
 
         rts
@@ -166,7 +156,6 @@ new6:   s7bank  #$00
         lda     $cfff
         lda     $c600
         mv      $3800,$c800,$cfff   ; slot 6 option ROM
-        lda     $cfff
         fillff  $3ff8,8
 
         rts
@@ -183,7 +172,6 @@ old4:   fillff  $2000,0             ; $C000-C0FF empty (soft switches)
         lda     $cfff
         lda     $c100
         mv      $2800,$c800,$cfff   ; slot 1 option ROM
-        lda     $cfff
         fillff  $2ff8,8
 
         fillff  $3000,0             ; empty
@@ -197,7 +185,6 @@ old4:   fillff  $2000,0             ; $C000-C0FF empty (soft switches)
         lda     $cfff
         lda     $c200
         mv      $3800,$c800,$cfff   ; slot 2 option ROM
-        lda     $cfff
         fillff  $3ff8,8
 
         rts
@@ -221,7 +208,6 @@ old6:   fillff  $2000,0             ; empty
         lda     $c600
         lda     $c100
         mv      $2800,$c800,$cfff   ; slot 6 option ROM bank 1
-        lda     $cfff
         fillff  $2ff8,8
 
         fillff  $3000,0             ; empty
@@ -237,7 +223,6 @@ old6:   fillff  $2000,0             ; empty
         lda     $c600
         lda     $c200
         mv      $3800,$c800,$cfff   ; slot 6 option ROM bank 2
-        lda     $cfff
         fillff  $3ff8,8
 
         rts

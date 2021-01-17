@@ -16,15 +16,16 @@ The only part of this I don't quite understand is that 16 bytes from slot 1 don'
 
 ## ROM layout
 
+The first 16KB of the ROM (regardless of old vs. new) is just directly mapped to C000-FFFF ROM. INTCXROMON must be enabled to access Cxxx, of course. This is the same as the CF ROM of a Platinum IIe, or CD+EF ROMs concatenated from an earlier IIe.
+
+The second 16KB of the ROM contains slot and option ROM for the built-in peripherals. The exact mapping varies between the two models.
+
 ### "Old" Laser 128
 
 ```
 0000 - 00FF = empty (reserved for soft switches)
-0100 - 07FF = C100-C7FF (INTCXROMON)
-0800 - 0FFF = C800-CFFF slot 1 option ROM (INTCXROMON)
-1000 - 1FFF = D000-DFFF ROM
-2000 - 2FFF = E000-EFFF ROM
-3000 - 3FFF = F000-FFFF ROM
+0100 - 0FFF = C100-CFFF (INTCXROMON)
+1000 - 3FFF = D000-FFFF ROM
 4000 - 40FF = empty (reserved for soft switches)
 4100 - 42FF = C100-C2FF (INTCXROMOFF, Parallel mode)
 4300 - 43FF = empty (no ROM for slot 3)
@@ -49,11 +50,8 @@ Slot 6 option ROM bank 2 is empty in ROM 2.9, but it might be populated on other
 
 ```
 0000 - 00FF = empty (reserved for soft switches)
-0100 - 07FF = C100-C7FF (INTCXROMON)
-0800 - 0FFF = C800-CFFF slot 1 option ROM (INTCXROMON)
-1000 - 1FFF = D000-DFFF ROM
-2000 - 2FFF = E000-EFFF ROM
-3000 - 3FFF = F000-FFFF ROM
+0100 - 0FFF = C100-CFFF (INTCXROMON)
+1000 - 3FFF = D000-FFFF ROM
 4000 - 40FF = empty (reserved for soft switches)
 4100 - 47FF = C100-C7FF (INTCXROMOFF, SLOTC3ROMON)
 4800 - 4FFF = C800-CFFF Slot 1 option ROM (INTCXROMOFF)
